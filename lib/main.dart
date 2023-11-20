@@ -16,7 +16,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const TimerClock(Duration(milliseconds: 90000)),
+      home: Scaffold(
+          appBar: AppBar(
+            title: const Text("Interval Training Timer"),
+            // backgroundColor: Theme.of(context).primaryColor,
+          ),
+          body: const TimerClock(
+            Duration(milliseconds: 90000),
+          )),
     );
   }
 }
