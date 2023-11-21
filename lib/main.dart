@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:interval_training_timer/wigets/timer_clock.dart';
+import 'package:interval_training_timer/models/interval_definition.dart';
+import 'package:interval_training_timer/models/training_definition.dart';
+import 'package:interval_training_timer/widgets/interval_timer/training_home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,6 +9,12 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  static const dummyTraining = TrainingDefinition("Park", [
+    IntervalDefinition("Walk", Duration(seconds: 3)),
+    IntervalDefinition("Sprint", Duration(seconds: 3)),
+    IntervalDefinition("Rest", Duration(seconds: 3)),
+  ]);
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +27,8 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
           appBar: AppBar(
             title: const Text("Interval Training Timer"),
-            // backgroundColor: Theme.of(context).primaryColor,
           ),
-          body: const TimerClock(
-            Duration(milliseconds: 5000),
-          )),
+          body: const TrainingHome(dummyTraining)),
     );
   }
 }

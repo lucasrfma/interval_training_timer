@@ -2,12 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
+import 'package:interval_training_timer/models/interval_definition.dart';
 
 class TimerClock extends StatefulWidget {
-  final Duration totalDuration;
+  final IntervalDefinition interval;
   final int alarmDuration;
 
-  const TimerClock(this.totalDuration, {super.key, this.alarmDuration = 8});
+  const TimerClock(this.interval, {super.key, this.alarmDuration = 8});
 
   @override
   State<StatefulWidget> createState() => _TimerClockState();
@@ -30,7 +31,7 @@ class _TimerClockState extends State<TimerClock> {
   @override
   void initState() {
     super.initState();
-    _updateTimeLeft(widget.totalDuration);
+    _updateTimeLeft(widget.interval.duration);
   }
 
   @override
@@ -53,7 +54,7 @@ class _TimerClockState extends State<TimerClock> {
 
   void _resetCountdown() {
     setState(() {
-      _updateTimeLeft(widget.totalDuration);
+      _updateTimeLeft(widget.interval.duration);
       stopwatch.reset();
       startable = true;
     });
@@ -72,7 +73,7 @@ class _TimerClockState extends State<TimerClock> {
   }
 
   void _updateClock(Timer t) {
-    var durationLeft = widget.totalDuration - stopwatch.elapsed;
+    var durationLeft = widget.interval.duration - stopwatch.elapsed;
 
     if (durationLeft < Duration.zero) {
       _timerFinished();
@@ -86,9 +87,16 @@ class _TimerClockState extends State<TimerClock> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Text(
+          widget.interval.name,
+          style: Theme.of(context).textTheme.displaySmall,
+        ),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.baseline,
+          textBaseline: TextBaseline.alphabetic,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
