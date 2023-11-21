@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
             // backgroundColor: Theme.of(context).primaryColor,
           ),
           body: const TimerClock(
-            Duration(milliseconds: 90000),
+            Duration(milliseconds: 5000),
           )),
     );
   }

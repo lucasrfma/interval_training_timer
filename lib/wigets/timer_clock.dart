@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 
 class TimerClock extends StatefulWidget {
   final Duration totalDuration;
+  final int alarmDuration;
 
-  const TimerClock(
-    this.totalDuration, {
-    super.key,
-  });
+  const TimerClock(this.totalDuration, {super.key, this.alarmDuration = 8});
 
   @override
   State<StatefulWidget> createState() => _TimerClockState();
@@ -46,20 +45,42 @@ class _TimerClockState extends State<TimerClock> {
   }
 
   void _stopCountdown() {
-    stopwatch.stop();
+    setState(() {
+      stopwatch.stop();
+    });
     timer?.cancel();
+  }
+
+  void _resetCountdown() {
+    setState(() {
+      _updateTimeLeft(widget.totalDuration);
+      stopwatch.reset();
+      startable = true;
+    });
+  }
+
+  void _timerFinished() {
+    _stopCountdown();
+    FlutterRingtonePlayer.playAlarm(asAlarm: true);
+    Future.delayed(Duration(seconds: widget.alarmDuration), () {
+      FlutterRingtonePlayer.stop();
+    });
+    setState(() {
+      startable = false;
+      _updateTimeLeft(Duration.zero);
+    });
   }
 
   void _updateClock(Timer t) {
     var durationLeft = widget.totalDuration - stopwatch.elapsed;
-    setState(() {
-      if (durationLeft < Duration.zero) {
-        _stopCountdown();
-        durationLeft = Duration.zero;
-        startable = false;
-      }
-      _updateTimeLeft(durationLeft);
-    });
+
+    if (durationLeft < Duration.zero) {
+      _timerFinished();
+    } else {
+      setState(() {
+        _updateTimeLeft(durationLeft);
+      });
+    }
   }
 
   @override
@@ -84,14 +105,20 @@ class _TimerClockState extends State<TimerClock> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton.icon(
-              onPressed: _stopCountdown,
-              icon: const Icon(Icons.stop),
-              label: const Text("Stop"),
-            ),
+            stopwatch.isRunning
+                ? ElevatedButton.icon(
+                    onPressed: _stopCountdown,
+                    icon: const Icon(Icons.stop),
+                    label: const Text("Stop"),
+                  )
+                : ElevatedButton.icon(
+                    onPressed: _resetCountdown,
+                    icon: const Icon(Icons.refresh),
+                    label: const Text("Reset"),
+                  ),
             const SizedBox(width: 8.0),
             ElevatedButton.icon(
-              onPressed: _startCountdown,
+              onPressed: startable ? _startCountdown : null,
               icon: const Icon(Icons.play_arrow),
               label: const Text("Start"),
             )
