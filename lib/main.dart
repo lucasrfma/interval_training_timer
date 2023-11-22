@@ -4,16 +4,16 @@ import 'package:interval_training_timer/models/training_definition.dart';
 import 'package:interval_training_timer/widgets/interval_timer/training_home.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
-  static const dummyTraining = TrainingDefinition("Park", [
-    IntervalDefinition("Walk", Duration(seconds: 3)),
-    IntervalDefinition("Sprint", Duration(seconds: 3)),
-    IntervalDefinition("Rest", Duration(seconds: 3)),
+  final dummyTraining = TrainingDefinition("Park", [
+    IntervalDefinition("Walk", const Duration(seconds: 5), alarmDuration: 4),
+    IntervalDefinition("Squat", const Duration(seconds: 5), alarmDuration: 4),
+    IntervalDefinition("Rest", const Duration(seconds: 5), alarmDuration: 4),
   ]);
 
   @override
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: const Text("Interval Training Timer"),
           ),
-          body: const TrainingHome(dummyTraining)),
+          body: TrainingHome(dummyTraining)),
     );
   }
 }

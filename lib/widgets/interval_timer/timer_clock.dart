@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:interval_training_timer/models/interval_definition.dart';
 
 class TimerClock extends StatefulWidget {
   final IntervalDefinition interval;
-  final int alarmDuration;
+  final void Function() onTimerFinished;
 
-  const TimerClock(this.interval, {super.key, this.alarmDuration = 8});
+  const TimerClock(this.interval, this.onTimerFinished, {super.key});
 
   @override
   State<StatefulWidget> createState() => _TimerClockState();
@@ -17,10 +16,11 @@ class TimerClock extends StatefulWidget {
 class _TimerClockState extends State<TimerClock> {
   late String _bigTimeLeft;
   late String _smallTimeLeft;
+  late String _name;
   Timer? timer;
   static const refreshRate = Duration(milliseconds: 10);
   final stopwatch = Stopwatch();
-  var startable = true;
+  bool ready = true;
 
   void _updateTimeLeft(Duration duration) {
     var timeSplit = duration.toString().split(".");
@@ -31,6 +31,16 @@ class _TimerClockState extends State<TimerClock> {
   @override
   void initState() {
     super.initState();
+    _name = widget.interval.name;
+    _updateTimeLeft(widget.interval.duration);
+  }
+
+  @override
+  void didUpdateWidget(covariant TimerClock oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    stopwatch.reset();
+    ready = true;
+    _name = widget.interval.name;
     _updateTimeLeft(widget.interval.duration);
   }
 
@@ -56,31 +66,24 @@ class _TimerClockState extends State<TimerClock> {
     setState(() {
       _updateTimeLeft(widget.interval.duration);
       stopwatch.reset();
-      startable = true;
     });
   }
 
-  void _timerFinished() {
-    _stopCountdown();
-    FlutterRingtonePlayer.playAlarm(asAlarm: true);
-    Future.delayed(Duration(seconds: widget.alarmDuration), () {
-      FlutterRingtonePlayer.stop();
-    });
-    setState(() {
-      startable = false;
-      _updateTimeLeft(Duration.zero);
-    });
+  void _finishInterval() {
+    ready = false;
+    widget.onTimerFinished();
   }
 
   void _updateClock(Timer t) {
-    var durationLeft = widget.interval.duration - stopwatch.elapsed;
-
-    if (durationLeft < Duration.zero) {
-      _timerFinished();
-    } else {
-      setState(() {
-        _updateTimeLeft(durationLeft);
-      });
+    if (ready) {
+      var durationLeft = widget.interval.duration - stopwatch.elapsed;
+      if (durationLeft < Duration.zero) {
+        _finishInterval();
+      } else {
+        setState(() {
+          _updateTimeLeft(durationLeft);
+        });
+      }
     }
   }
 
@@ -91,7 +94,7 @@ class _TimerClockState extends State<TimerClock> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          widget.interval.name,
+          _name,
           style: Theme.of(context).textTheme.displaySmall,
         ),
         Row(
@@ -126,7 +129,7 @@ class _TimerClockState extends State<TimerClock> {
                   ),
             const SizedBox(width: 8.0),
             ElevatedButton.icon(
-              onPressed: startable ? _startCountdown : null,
+              onPressed: _startCountdown,
               icon: const Icon(Icons.play_arrow),
               label: const Text("Start"),
             )
