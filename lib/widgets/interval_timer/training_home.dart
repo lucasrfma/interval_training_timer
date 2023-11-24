@@ -11,10 +11,10 @@ class TrainingHome extends StatefulWidget {
   final TrainingDefinition training;
 
   @override
-  State<StatefulWidget> createState() => TrainingHomeState();
+  State<StatefulWidget> createState() => _TrainingHomeState();
 }
 
-class TrainingHomeState extends State<TrainingHome> {
+class _TrainingHomeState extends State<TrainingHome> {
   // to keep track which intervals to show
   int _currentIndex = 0;
   late int _previousIndex;
