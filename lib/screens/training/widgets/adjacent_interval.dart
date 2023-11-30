@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:interval_training_timer/models/interval_definition.dart';
+import 'package:flutter/material.dart' hide Interval;
+import 'package:interval_training_timer/models/interval.dart';
 
 class AdjacentInterval extends StatelessWidget {
   const AdjacentInterval(this.interval, {super.key});
 
-  final IntervalDefinition interval;
+  final Interval interval;
 
   @override
   Widget build(BuildContext context) {

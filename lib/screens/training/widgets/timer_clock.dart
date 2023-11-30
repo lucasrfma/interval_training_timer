@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:interval_training_timer/models/interval_definition.dart';
+import 'package:flutter/material.dart' hide Interval;
+import 'package:interval_training_timer/models/interval.dart';
 
 class TimerClock extends StatefulWidget {
-  final IntervalDefinition interval;
+  final Interval interval;
   final void Function() onTimerFinished;
 
   const TimerClock(this.interval, this.onTimerFinished, {super.key});

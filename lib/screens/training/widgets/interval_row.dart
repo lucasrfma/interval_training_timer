@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class TimerRow extends StatelessWidget {
+class IntervalRow extends StatelessWidget {
   final Widget widget;
   final int index;
   final int cyclesDone;
   final bool current;
 
-  const TimerRow(
+  const IntervalRow(
       {required this.index,
       required this.widget,
       required this.cyclesDone,
