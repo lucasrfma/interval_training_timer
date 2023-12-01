@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:interval_training_timer/models/training.dart';
-import 'package:interval_training_timer/screens/home/widgets/training_card.dart';
-import 'package:interval_training_timer/screens/training/training_screen.dart';
+import 'package:interval_training_timer/screens/home/training_card.dart';
+import 'package:interval_training_timer/screens/training_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<Training> trainingList;
@@ -22,6 +22,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text('Interval Training Timer'),
         actions: [
           Padding(

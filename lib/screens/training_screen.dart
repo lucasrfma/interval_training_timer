@@ -2,9 +2,9 @@ import 'package:flutter/material.dart' hide Interval;
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:interval_training_timer/models/interval.dart';
 import 'package:interval_training_timer/models/training.dart';
-import 'package:interval_training_timer/screens/training/widgets/adjacent_interval.dart';
-import 'package:interval_training_timer/screens/training/widgets/interval_row.dart';
-import 'package:interval_training_timer/screens/training/widgets/timer_clock.dart';
+import 'package:interval_training_timer/screens/training/adjacent_interval.dart';
+import 'package:interval_training_timer/screens/training/interval_row.dart';
+import 'package:interval_training_timer/screens/training/timer_clock.dart';
 
 class TrainingScreen extends StatefulWidget {
   const TrainingScreen(this.training, {super.key});

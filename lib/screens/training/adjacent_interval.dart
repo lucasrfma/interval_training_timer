@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' hide Interval;
 import 'package:interval_training_timer/models/interval.dart';
+import 'package:interval_training_timer/utils/utils.dart';
 
 class AdjacentInterval extends StatelessWidget {
   const AdjacentInterval(this.interval, {super.key});
@@ -17,7 +18,7 @@ class AdjacentInterval extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineSmall,
         ),
         Text(
-          interval.duration.toString().split(".").first.padLeft(8, "0"),
+          durationClockFormat(interval.duration),
           style: Theme.of(context).textTheme.headlineLarge,
         ),
       ],
