@@ -22,6 +22,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text('Interval Training Timer'),
         actions: [
           Padding(
